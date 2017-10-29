@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace spp_lr1
 {
@@ -12,7 +9,14 @@ namespace spp_lr1
     {
         static void Main(string[] args)
         {
-            PrintPublicTypes(GetAssembly("test"));
+            if (args.Count() == 0)
+            {
+                Console.WriteLine("missing argument: assembly name, usage: spp_lr1 <assembly_name>");
+            }
+            else
+            {
+                PrintPublicTypes(GetAssembly(args[0]));
+            }
         }
 
         static void PrintPublicTypes(Assembly assembly)
@@ -38,7 +42,7 @@ namespace spp_lr1
 
         static Assembly GetAssembly(string assemblyName)
         {
-            string assemblyPath = Directory.GetCurrentDirectory() + "\\spp_lr1.exe";
+            string assemblyPath = Directory.GetCurrentDirectory() + "\\" + assemblyName;
             try
             {
                 Assembly a = Assembly.LoadFile(assemblyPath);
