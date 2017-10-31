@@ -12,10 +12,9 @@ namespace spp_lr3
         static void Main(string[] args)
         {
             ConcurrentAccumulator accumulator = new ConcurrentAccumulator(10, 4000, (List<object> list) => {
-                list.ForEach(num => Console.WriteLine("Main thread: {0}, {1}", Thread.CurrentThread.ManagedThreadId, num));
+                list.ForEach(num => Console.WriteLine(num));
             });
             accumulator.Add(1);
-            Thread.Sleep(1000);
             accumulator.Add(2);
             accumulator.Add(3);
         }

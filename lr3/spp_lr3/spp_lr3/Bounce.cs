@@ -20,7 +20,7 @@ namespace spp_lr3
             thread = new Thread(new ThreadStart(TryToCallCallback));
         }
 
-        public void BounceCallback()
+        public void CallBounce()
         {
             thread.Abort();
             thread = new Thread(new ThreadStart(TryToCallCallback));
@@ -28,9 +28,14 @@ namespace spp_lr3
 
         }
 
+        public void CallImmidiate()
+        {
+            thread.Abort();
+            callback();
+        }
+
         private void TryToCallCallback()
         {
-            Console.WriteLine("Callback thread: " + Thread.CurrentThread.ManagedThreadId);
             Thread.Sleep(delay);
             callback();
         }

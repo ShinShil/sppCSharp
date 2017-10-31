@@ -13,24 +13,38 @@ namespace spp_lr3
         public delegate void FlushCallback(List<object> items);
 
         private List<object> buffer = new List<object>();
-        private int maxObjectsAmount = 10;
+        private int maxObjectsAmount;
+        private FlushCallback flushCallback;
         private Bounce bounce;
+        private object lockAdd = new object();
+        private object lockFlush = new object();
 
         public ConcurrentAccumulator(int maxObjectsAmount, int timeout, FlushCallback flushCallback)
         {
             this.maxObjectsAmount = maxObjectsAmount;
+            this.flushCallback = flushCallback;
             bounce = new Bounce(() =>
             {
                 flushCallback(buffer);
                 buffer = new List<object>();
             }, timeout);
-            bounce.BounceCallback();
+            bounce.CallBounce();
         }
 
         public void Add(object item)
         {
-            buffer.Add(item);
-            bounce.BounceCallback();
+            new Thread(new ParameterizedThreadStart(obj =>
+            {
+                lock (lockAdd)
+                {
+                    if (buffer.Count + 1 > maxObjectsAmount)
+                    {
+                        bounce.CallImmidiate();
+                    }
+                    buffer.Add(obj);
+                }
+            })).Start(item);
+            bounce.CallBounce();
         }
     }
 }
