@@ -11,7 +11,7 @@ namespace spp_lr3
     {
         static void Main(string[] args)
         {
-            ConcurrentAccumulator accumulator = new ConcurrentAccumulator(10, 4000, (List<object> list) => {
+            ConcurrentAccumulator accumulator = new ConcurrentAccumulator(2, 3000, (List<object> list) => {
                 list.ForEach(num => Console.WriteLine(num));
             });
             accumulator.Add(1);

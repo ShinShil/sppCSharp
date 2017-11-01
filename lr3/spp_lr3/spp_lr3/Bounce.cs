@@ -31,7 +31,7 @@ namespace spp_lr3
         public void CallImmidiate()
         {
             thread.Abort();
-            callback();
+            new Thread(new ThreadStart(callback)).Start();
         }
 
         private void TryToCallCallback()
