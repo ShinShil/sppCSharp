@@ -27,7 +27,10 @@ namespace spp_lr3
             accumulator.Add(2);
             accumulator.Add(3);
             accumulator.Add(4);
+            accumulator.Start();
             accumulator.Add(5);
+            Thread.Sleep(2000);
+            accumulator.Stop();
         }
     }
 }

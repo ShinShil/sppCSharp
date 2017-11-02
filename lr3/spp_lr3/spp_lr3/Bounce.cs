@@ -32,6 +32,14 @@ namespace spp_lr3
             }
         }
 
+        public void CancelBounce()
+        {
+            lock(lockthread)
+            {
+                thread.Abort();
+            }
+        }
+
         public void CallImmidiate()
         {
             new Thread(new ThreadStart(CallImmidiateThread)).Start();

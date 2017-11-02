@@ -17,6 +17,7 @@ namespace spp_lr3
         private Bounce bounce;
         private object lockAdd = new object();
         private object lockFlush = new object();
+        private bool started = false;
 
         public ConcurrentAccumulator(int maxObjectsAmount, int timeout, FlushCallback flushCallback)
         {
@@ -27,11 +28,25 @@ namespace spp_lr3
                 {
                     flushCallback(buffer);
                     buffer = new List<object>();
-                    new Thread(new ThreadStart(() => bounce.CallBounce())).Start();
+                    if (started)
+                    {
+                        new Thread(new ThreadStart(() => bounce.CallBounce())).Start();
+                    }
                     Monitor.PulseAll(lockFlush);
                 }
             }, timeout);
+        }
+
+        public void Start()
+        {
             bounce.CallBounce();
+            started = true;
+        }
+
+        public void Stop()
+        {
+            bounce.CancelBounce();
+            started = false;
         }
 
         public void Add(object item)
@@ -51,7 +66,10 @@ namespace spp_lr3
                     }
                 }
             })).Start(item);
-            bounce.CallBounce();
+            if (started)
+            {
+                bounce.CallBounce();
+            }
         }
 
         private bool CanCallFlushCalback()
