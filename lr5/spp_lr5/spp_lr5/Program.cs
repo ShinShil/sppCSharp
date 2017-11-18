@@ -1,49 +1,63 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace spp_lr5
 {
     class Program
     {
+        static FileCopierAsync copierAsync = null;
+        static CmdArgs cmdArgs;
+        static InputBlockerAsync inputBlockerAsync;
+
         static void Main(string[] args)
         {
-            if (!InputArgsAreValid(args)) return;
-            CopyFile(args[0], args[1]);
-        }
-
-        static void CopyFile(string src, string dest)
-        {
-            CopyFile(src, dest);
-        }
-
-        static bool InputArgsAreValid(string[] args)
-        {
-            bool res = true;
-            if (args.Length < 3)
+            try
             {
-                PrintUsage();
-                res = false;
-            }
-            else
-            {
-                int nThreads = 0;
-                if (!Int32.TryParse(args[2], out nThreads))
+                cmdArgs = new CmdArgs(args);
+                inputBlockerAsync = new InputBlockerAsync(asyncRes =>
                 {
-                    Console.WriteLine("3rd arg should an integer");
-                    PrintUsage();
-                    res = false;
-                }
+                    if(copierAsync != null)
+                    {
+                        copierAsync.AbortCopy();
+                    }
+                });
+                copierAsync = new FileCopierAsync(cmdArgs.DestFile, cmdArgs.SrcFile, cmdArgs.nThreadsAmount);
+                copierAsync.OnStart += CopierAsync_onStart;
+                copierAsync.OnAbort += CopierAsync_onAbort;
+                copierAsync.OnSuccess += CopierAsync_onSuccess;
+                copierAsync.StartCopyAsync();
             }
-            return res;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fail to copy");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey(true);
+            }
         }
 
-        static void PrintUsage()
+        private static void CopierAsync_onSuccess()
         {
-            Console.WriteLine("Wrong input, usage:\n\tspp_lr5 <src_file> <dest_file> <thread_amount>\n");
+            inputBlockerAsync.Continue();
+            Console.WriteLine("File have been succesfully copied");
+        }
+
+        private static void CopierAsync_onAbort()
+        {
+            inputBlockerAsync.Continue();
+            Console.WriteLine("Copying has been terminated by user");
+        }
+
+        private static void CopierAsync_onStart()
+        {
+            inputBlockerAsync.Wait();
+            Console.WriteLine("Copying files, press any key to stop copying...");
         }
     }
 }
