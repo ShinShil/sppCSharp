@@ -13,7 +13,7 @@ namespace spp_lr5
         private string destFilePath;
         private string srcFilePath;
         private uint maxThreadsAmount = 0;
-        private uint copiedBytesAmountPerTime = 1;
+        private uint copiedBytesAmountPerTime = 2;
 
         private FileStream srcStream;
         private FileStream destStream;
@@ -52,23 +52,17 @@ namespace spp_lr5
                         {
                             lock (lockobject)
                             {
-                                Thread.Sleep(500);
+                                Thread.Sleep(200);
                                 byte[] readenBytes = new byte[copiedBytesAmountPerTime];
                                 int readenBytesAmount = srcStream.Read(readenBytes, 0, readenBytes.Length);
-                                if (readenBytesAmount == 0)
-                                {
-                                    destStream.Close();
-                                    srcStream.Close();
-                                }
-                                else
-                                {
-                                    destStream.Write(readenBytes, 0, readenBytesAmount);
-                                }
+                                destStream.Write(readenBytes, 0, readenBytesAmount);
                                 countdownEvent.Signal();
                             }
                         });
                     }
                     countdownEvent.Wait();
+                    destStream.Close();
+                    srcStream.Close();
                     OnSuccess();
                 }
             }));

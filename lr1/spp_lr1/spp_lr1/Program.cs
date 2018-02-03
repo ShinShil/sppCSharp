@@ -19,7 +19,7 @@ namespace spp_lr1
             }
         }
 
-        static void PrintPublicTypes(Assembly assembly)
+        public static void PrintPublicTypes(Assembly assembly)
         {
             if (assembly == null) return;
 

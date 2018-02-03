@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -18,6 +19,8 @@ namespace spp_lr5
 
         private AsyncCallback AsyncCallback;
         private IAsyncResult asyncResult;
+
+        private IntPtr inputProcessStream;
 
         public InputBlockerAsync(AsyncCallback callback = null, IAsyncResult result = null)
         {
@@ -42,7 +45,8 @@ namespace spp_lr5
                 if (threadHandle != IntPtr.Zero)
                 {
                     isThreadTerminated = true;
-                    PostMessage(threadHandle, WM_KEYDOWN, VK_RETURN, 0);
+                    PostMessage(inputProcessStream, WM_KEYDOWN, VK_RETURN, 0);
+                    //PostMessage(threadHandle, WM_KEYDOWN, VK_RETURN, 0);
                     isWaiting = false;
                 }
             }
@@ -59,6 +63,7 @@ namespace spp_lr5
         private void WaitingThread()
         {
             threadHandle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
+            inputProcessStream = System.Diagnostics.Process.GetCurrentProcess().Handle;
             Console.ReadKey(true);
             if (!isThreadTerminated)
             {

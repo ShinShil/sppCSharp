@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MessageService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IMessageService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMessageService_GetTestMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestMessage" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_GetTestMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Push_InputMessage">
+    <wsdl:part name="parameters" element="tns:Push" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Push_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PushResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Connect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connect" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Connect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Disconnect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Disconnect" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Disconnect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DisconnectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Pop_InputMessage">
+    <wsdl:part name="parameters" element="tns:Pop" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Pop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PopResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Dump_InputMessage">
+    <wsdl:part name="parameters" element="tns:Dump" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Dump_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DumpResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Restore_InputMessage">
+    <wsdl:part name="parameters" element="tns:Restore" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_Restore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RestoreResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IMessageService">
+    <wsdl:operation name="GetTestMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/GetTestMessage" message="tns:IMessageService_GetTestMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/GetTestMessageResponse" message="tns:IMessageService_GetTestMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Push">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Push" message="tns:IMessageService_Push_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/PushResponse" message="tns:IMessageService_Push_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Connect" message="tns:IMessageService_Connect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/ConnectResponse" message="tns:IMessageService_Connect_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Disconnect" message="tns:IMessageService_Disconnect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DisconnectResponse" message="tns:IMessageService_Disconnect_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Pop">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Pop" message="tns:IMessageService_Pop_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/PopResponse" message="tns:IMessageService_Pop_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Dump">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Dump" message="tns:IMessageService_Dump_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DumpResponse" message="tns:IMessageService_Dump_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Restore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/Restore" message="tns:IMessageService_Restore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/RestoreResponse" message="tns:IMessageService_Restore_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IMessageService" type="tns:IMessageService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IMessageService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="GetTestMessage">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/GetTestMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Push">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Push" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Connect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Disconnect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Pop">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Pop" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Dump">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Dump" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Restore">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/Restore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MessageService">
+    <wsdl:port name="NetTcpBinding_IMessageService" binding="tns:NetTcpBinding_IMessageService">
+      <soap12:address location="net.tcp://localhost:8090/MessageService" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:8090/MessageService</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>DESKTOP-Q9P5AQL\Lotegr</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

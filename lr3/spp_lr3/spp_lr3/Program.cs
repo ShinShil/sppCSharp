@@ -11,7 +11,7 @@ namespace spp_lr3
     {
         static void Main(string[] args)
         {
-            ConcurrentAccumulator accumulator = new ConcurrentAccumulator(2, 1000, (List<object> list) =>
+            ConcurrentAccumulator accumulator = new ConcurrentAccumulator(2, 5000, (List<object> list) =>
             {
                 if (list.Count == 0)
                 {
@@ -29,7 +29,7 @@ namespace spp_lr3
             accumulator.Add(4);
             accumulator.Start();
             accumulator.Add(5);
-            Thread.Sleep(2000);
+            Thread.Sleep(7000);
             accumulator.Stop();
         }
     }

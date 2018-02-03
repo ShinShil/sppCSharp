@@ -37,21 +37,33 @@ namespace spp_lr5
             {
                 Console.WriteLine("Fail to copy");
                 Console.WriteLine(ex.Message);
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey(true);
+                WaitForUserInput();
             }
+        }
+
+        private static void WaitForUserInput()
+        {
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey(true);
         }
 
         private static void CopierAsync_onSuccess()
         {
             inputBlockerAsync.Continue();
+
             Console.WriteLine("File have been succesfully copied");
+            bool isMd5Equals = Md5Checker.CheckFiles(cmdArgs.DestFile, cmdArgs.SrcFile);
+            Console.WriteLine(isMd5Equals ? "md5 hashes are equal" : "md5 hashes are not equal");
+
+            WaitForUserInput();
         }
 
         private static void CopierAsync_onAbort()
         {
             inputBlockerAsync.Continue();
             Console.WriteLine("Copying has been terminated by user");
+
+            WaitForUserInput();
         }
 
         private static void CopierAsync_onStart()
